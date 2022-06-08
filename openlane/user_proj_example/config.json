@@ -7,7 +7,7 @@
     "CLOCK_PORT"               : "wb_clk_i",
     "DESIGN_IS_CORE"           : "0",
     "DESIGN_NAME"              : "user_proj_example",
-    "DIE_AREA"                 : "0 0 900 600",
+    "DIE_AREA"                 : "0 0 2000 2000",
     "DIODE_INSERTION_STRATEGY" : "4",
     "FP_PIN_ORDER_CFG"         : "pin_order.cfg",
     "FP_SIZING"                : "absolute",
