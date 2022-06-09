@@ -34,8 +34,8 @@ set ::env(CLOCK_PORT) "wb_clk_i"
 # set ::env(CLOCK_NET) "counter.clk"
 set ::env(CLOCK_PERIOD) "10"
 
-set ::env(FP_SIZING) absolute
-set ::env(DIE_AREA) "0 0 2000 2000"
+# set ::env(FP_SIZING) absolute
+# set ::env(DIE_AREA) "0 0 2000 2000"
 
 set ::env(FP_PIN_ORDER_CFG) $script_dir/pin_order.cfg
 
@@ -57,6 +57,6 @@ set ::env(RT_MAX_LAYER) {met4}
 set ::env(VDD_NETS) [list {vccd1}]
 set ::env(GND_NETS) [list {vssd1}]
 
-set ::env(DIODE_INSERTION_STRATEGY) 4 
+# set ::env(DIODE_INSERTION_STRATEGY) 4 
 # If you're going to use multiple power domains, then disable cvc run.
 set ::env(RUN_CVC) 1
