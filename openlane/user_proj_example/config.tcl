@@ -22,6 +22,10 @@ set ::env(DESIGN_NAME) user_proj_example
 
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
+	$script_dir/../../verilog/rtl/yonga_can_top.v \
+	$script_dir/../../verilog/rtl/yonga_can_controller.v \
+	$script_dir/../../verilog/rtl/yonga_can_packetizer.v \
+	$script_dir/../../verilog/rtl/yonga_can_pulse_gen.v \
 	$script_dir/../../verilog/rtl/user_proj_example.v"
 
 set ::env(DESIGN_IS_CORE) 0
