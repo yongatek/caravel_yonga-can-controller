@@ -32,7 +32,7 @@ module yonga_can_top #(
 )(
     input wire clk,
     input wire rst,
-    
+    output	   ready,
     input wire valid,
 
     output reg [BITS-1:0] rdata,
@@ -45,14 +45,14 @@ module yonga_can_top #(
     output reg [BITS-1:0] device_reg_rd_data,
 
     output wire can_tx,
-    output wire done, // Added for simulation in order to perform wait(done) operation.
-    output wire [2:0] o_status, // Assigned to o_sts_code of controller. Allows user to monitor if arbitration is lost, transmission is failed or succeed. 
+    //output wire done, // Added for simulation in order to perform wait(done) operation.
+    //output wire [2:0] o_status, // Assigned to o_sts_code of controller. Allows user to monitor if arbitration is lost, transmission is failed or succeed. 
     input wire can_rx,
     
-    output reg [BITS-1:0] count,
-    output wire ack_slot // Added for simulation
+    output reg [BITS-1:0] count
+    //output wire ack_slot // Added for simulation
 );
-    reg ready;
+//    reg ready;
 //    reg [BITS-1:0] device_reg_rd_data;
 //    reg [BITS-1:0] count;
 //    reg [BITS-1:0] rdata;
@@ -148,8 +148,8 @@ module yonga_can_top #(
     wire pulse_gen_en, pulse_gen_synced, pulse_gen_drive_pulse, pulse_gen_sample_pulse;
     wire packetizer_en, packetizer_rdy, packetizer_message_bit;
 
-//    wire fake_rx;
-//    assign fake_rx = (ack_slot_flag == 1'b1) ? ~can_tx : can_tx;
+    wire fake_rx;
+    assign fake_rx = (ack_slot_flag == 1'b1) ? ~can_tx : can_tx;
 
     // instantiate yonga_can_pulse_gen
     yonga_can_pulse_gen inst_yonga_can_pulse_gen(
@@ -189,9 +189,9 @@ module yonga_can_top #(
         .i_sample_pulse(pulse_gen_sample_pulse),
 
         .i_config_enable(SYS_CFG_REG[1]),
-        .i_sys_ctrl_sts_send(SYS_CTRL_STS_REG[0]),
-		.done_tx(done_controller),
-        .o_sts_code(sts_code)
+        .i_sys_ctrl_sts_send(SYS_CTRL_STS_REG[0])
+		//.done_tx(done_controller),
+        //.o_sts_code(sts_code)
 
     );
 
@@ -230,9 +230,9 @@ module yonga_can_top #(
 
     );
 
-assign ack_slot = ack_slot_flag;
-assign done = done_controller;
-assign o_status = sts_code;
+//assign ack_slot = ack_slot_flag;
+//assign done = done_controller;
+//assign o_status = sts_code;
  
 endmodule
 `default_nettype wire
