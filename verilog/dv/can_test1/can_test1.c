@@ -118,10 +118,6 @@ void main()
     // tmp = device_register_read(SYS_CTRL_STS_REG);
     // device_register_write(MSG_CFG_REG, tmp+1);
 
-    reg_mprj_slave = 0x00002710;
-    if (reg_mprj_slave == 0x2B3D) {
-        reg_mprj_datal = 0xAB610000;
-    }
 }
 
 void device_register_write(uint32_t device_addr, uint32_t val){
