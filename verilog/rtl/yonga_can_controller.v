@@ -47,7 +47,6 @@ module yonga_can_controller(
 );
 
 	parameter STATE_RESET = 0, STATE_SYNC = 1, STATE_CHECK_IDLE = 2, STATE_DRIVE_DATA = 3, STATE_SAMPLE_DATA = 4, STATE_IFS = 5, STATE_ERROR = 6, STATE_EN_PACKETIZER = 7;
-	reg [2:0] o_sts_code;
 	reg done_tx;
   	reg [2:0] state_reg;
 	reg bit_transmitted;
