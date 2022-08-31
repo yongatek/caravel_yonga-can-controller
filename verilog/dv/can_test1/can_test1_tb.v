@@ -48,7 +48,7 @@ module can_test1_tb;
 		$dumpvars(0, can_test1_tb);
 
 		// Repeat cycles of 1000 clock edges as needed to complete testbench
-		repeat (20) begin
+		repeat (200) begin
 			repeat (1000) @(posedge clock);
 			$display("+1000 cycles");
 		end

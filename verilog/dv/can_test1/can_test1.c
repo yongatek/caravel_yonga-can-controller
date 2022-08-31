@@ -32,6 +32,7 @@
 #define DATA_REG2_REG 0x10
 #define SYS_CFG_REG 0x14
 #define SYS_CTRL_STS_REG 0x18
+#define TX_SUCCESSFUL 0x2
 
 void device_register_write(uint32_t, uint32_t);
 
@@ -114,9 +115,10 @@ void main()
     // Initiate CAN transfer
     device_register_write(SYS_CTRL_STS_REG, 0x00000001);
 
-    // uint32_t tmp;
-    // tmp = device_register_read(SYS_CTRL_STS_REG);
-    // device_register_write(MSG_CFG_REG, tmp+1);
+    uint32_t tmp;
+    while (1) {
+      if (device_register_read(SYS_CTRL_STS_REG) & TX_SUCCESSFUL) break;
+    }
 
 }
 
