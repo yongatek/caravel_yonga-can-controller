@@ -182,7 +182,7 @@ module yonga_can_top #(
         
         .i_packetizer_message_bit(packetizer_message_bit),
 
-        .i_message_bit(can_rx),
+        .i_message_bit(fake_rx),
         .o_message_bit(can_tx),
 
         .i_drive_pulse(pulse_gen_drive_pulse),
