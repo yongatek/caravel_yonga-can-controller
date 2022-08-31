@@ -42,9 +42,8 @@ module yonga_can_controller(
 	input  	wire	i_sample_pulse,
 
 	input  	wire	i_config_enable,
-	input  	wire	i_sys_ctrl_sts_send
-	//output 	reg 	[2:0] o_sts_code,
-	//output  reg     done_tx
+	input  	wire	i_sys_ctrl_sts_send,
+	output 	reg 	[2:0] o_sts_code
 );
 
 	parameter STATE_RESET = 0, STATE_SYNC = 1, STATE_CHECK_IDLE = 2, STATE_DRIVE_DATA = 3, STATE_SAMPLE_DATA = 4, STATE_IFS = 5, STATE_ERROR = 6, STATE_EN_PACKETIZER = 7;

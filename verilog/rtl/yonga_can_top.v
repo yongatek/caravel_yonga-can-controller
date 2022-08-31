@@ -32,7 +32,7 @@ module yonga_can_top #(
 )(
     input wire clk,
     input wire rst,
-    output	   ready,
+    output reg ready,
     input wire valid,
 
     output reg [BITS-1:0] rdata,
@@ -45,12 +45,9 @@ module yonga_can_top #(
     output reg [BITS-1:0] device_reg_rd_data,
 
     output wire can_tx,
-    //output wire done, // Added for simulation in order to perform wait(done) operation.
-    //output wire [2:0] o_status, // Assigned to o_sts_code of controller. Allows user to monitor if arbitration is lost, transmission is failed or succeed. 
     input wire can_rx,
     
     output reg [BITS-1:0] count
-    //output wire ack_slot // Added for simulation
 );
 //    reg ready;
 //    reg [BITS-1:0] device_reg_rd_data;
@@ -65,7 +62,6 @@ module yonga_can_top #(
     reg [BITS-1:0] SYS_CFG_REG;
     reg [BITS-1:0] SYS_CTRL_STS_REG;
     wire [2:0] sts_code;
-    wire done_controller;
     // CPU controls the peripheral via pseudo memory-mapped registers 
     always @(posedge clk) begin
         if (rst) begin
@@ -189,9 +185,8 @@ module yonga_can_top #(
         .i_sample_pulse(pulse_gen_sample_pulse),
 
         .i_config_enable(SYS_CFG_REG[1]),
-        .i_sys_ctrl_sts_send(SYS_CTRL_STS_REG[0])
-		//.done_tx(done_controller),
-        //.o_sts_code(sts_code)
+        .i_sys_ctrl_sts_send(SYS_CTRL_STS_REG[0]),
+        .o_sts_code(sts_code)
 
     );
 
@@ -199,7 +194,6 @@ module yonga_can_top #(
     yonga_can_packetizer inst_yonga_can_packetizer(
         .i_packetizer_clk(clk),
         .i_packetizer_rst(rst),
-//        .i_done_controller(done_controller),
         .i_packetizer_en(packetizer_en),
         .i_drive_pulse(pulse_gen_drive_pulse),
 
@@ -230,9 +224,5 @@ module yonga_can_top #(
 
     );
 
-//assign ack_slot = ack_slot_flag;
-//assign done = done_controller;
-//assign o_status = sts_code;
- 
 endmodule
 `default_nettype wire
