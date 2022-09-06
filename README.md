@@ -47,14 +47,15 @@ YONGA-CAN Controller is a partial implementation of CAN 2.0B standard. Currently
 |        |  [23:16] DATA_BYTE_6 | Data Byte 6 |  |  |  | `0x0` |
 |        |  [31:24] DATA_BYTE_7 | Data Byte 7 |  |  |  | `0x0` |
 | `0x14` | SYS_CFG |IP Config Register | REG | R/W |  | `0x0` |
-|        |  [0] MODE |  |  |  |  | `0x0` |
+|        |  [0] MODE | IP Mode Select |  |  |  | `0x0` |
+|        |  | BUS_MODE = 0, LOOPBACK_MODE = 1 |  |  |  |  |
 |        |  [1] ENABLE | IP Enable Flag |  |  |  | `0x0` |
 | `0x18` | SYS_CTRL_STS |IP Control and Status Register | REG | R/W |  | `0x0` |
 |        |  [0] SEND | Send Message |  |  | self-clearing | `0x0` |
 |        |  [3:1] STATUS_CODE | Operation Status Code |  |  |  | `0x0` |
-|        |  | TX_SUCCESSFUL = 1, TX_FAILED = 4, ARBITRATION_LOST = 2 |  |  |  |  |
+|        |  | TX_SUCCESSFUL = 1, ARBITRATION_LOST = 2, TX_FAILED = 3 |  |  |  |  |
 
-_Generated on 2022-04-25 at 11:42 (UTC) by airhdl version 2022.04.1-116_
+_Generated on 2022-09-06 at 12:53 (UTC) by airhdl version 2022.08.2-618538036_
 
 Running Simulation
 ========
