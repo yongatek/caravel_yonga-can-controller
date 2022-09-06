@@ -144,8 +144,9 @@ module yonga_can_top #(
     wire pulse_gen_en, pulse_gen_synced, pulse_gen_drive_pulse, pulse_gen_sample_pulse;
     wire packetizer_en, packetizer_rdy, packetizer_message_bit;
 
-    wire fake_rx;
-    assign fake_rx = (ack_slot_flag == 1'b1) ? ~can_tx : can_tx;
+    // use can_tx for receive channel in loopback mode
+    wire can_rx_mux;
+    assign can_rx_mux = (SYS_CFG_REG[0] == 1'b1) ? ((ack_slot_flag == 1'b1) ? ~can_tx : can_tx) : can_rx;
 
     // instantiate yonga_can_pulse_gen
     yonga_can_pulse_gen inst_yonga_can_pulse_gen(
@@ -178,7 +179,7 @@ module yonga_can_top #(
         
         .i_packetizer_message_bit(packetizer_message_bit),
 
-        .i_message_bit(fake_rx),
+        .i_message_bit(can_rx_mux),
         .o_message_bit(can_tx),
 
         .i_drive_pulse(pulse_gen_drive_pulse),
