@@ -20,11 +20,10 @@
 #include <stub.c>
 
 /*
-	CAN TX Transaction Test:
+	CAN TX Transaction Test in Loopback Mode:
 		- TBD
 */
 
-#define WR_EN 0x20
 #define BAUD_RATE_CFG_REG 0x0
 #define MSG_ID_REG 0x4
 #define MSG_CFG_REG 0x8
@@ -32,7 +31,12 @@
 #define DATA_REG2_REG 0x10
 #define SYS_CFG_REG 0x14
 #define SYS_CTRL_STS_REG 0x18
-#define TX_SUCCESSFUL 0x2
+
+#define CONFIG_EN 0x02
+#define LOOPBACK_EN 0x01
+#define TX_SUCCESSFUL 0x02
+
+#define WR_EN 0x20
 
 void device_register_write(uint32_t, uint32_t);
 
@@ -100,7 +104,10 @@ void main()
 	reg_mprj_datal = 0xAB600000;
 
     // Enable device configuration
-    device_register_write(SYS_CFG_REG, 0x00000002);
+    device_register_write(SYS_CFG_REG, CONFIG_EN);
+
+    // Enable loopback mode
+    device_register_write(SYS_CFG_REG, (CONFIG_EN | LOOPBACK_EN));
 
     // Apply configuration
     device_register_write(BAUD_RATE_CFG_REG, 0x00102008);
@@ -110,7 +117,7 @@ void main()
     device_register_write(DATA_REG2_REG, 0xAB0AB030);
 
     // Disable device configuration
-    device_register_write(SYS_CFG_REG, 0x00000000);
+    device_register_write(SYS_CFG_REG, (~CONFIG_EN | LOOPBACK_EN));
 
     // Initiate CAN transfer
     device_register_write(SYS_CTRL_STS_REG, 0x00000001);
