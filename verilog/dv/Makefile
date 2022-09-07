@@ -20,7 +20,7 @@
 .SILENT: clean all
 
 
-PATTERNS = io_ports la_test1 la_test2 wb_port can_test1 mprj_stimulus
+PATTERNS = io_ports la_test1 la_test2 wb_port can_test1 can_test2 mprj_stimulus
 
 all:  ${PATTERNS}
 
