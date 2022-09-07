@@ -19,21 +19,24 @@
 #include <defs.h>
 #include <stub.c>
 
+#include "YONGA_CAN_IP_regs.h"
+
 /*
 	CAN TX Transaction Test in Loopback Mode:
-		- TBD
+		- Transmitted frame format: CAN BASE FORMAT
 */
 
-#define BAUD_RATE_CFG_REG 0x0
-#define MSG_ID_REG 0x4
-#define MSG_CFG_REG 0x8
-#define DATA_REG1_REG 0xC
-#define DATA_REG2_REG 0x10
-#define SYS_CFG_REG 0x14
-#define SYS_CTRL_STS_REG 0x18
+#define BAUD_RATE_CFG_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + BAUD_RATE_CFG_OFFSET)
+#define MSG_ID_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + MSG_ID_OFFSET)
+#define MSG_CFG_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + MSG_CFG_OFFSET)
+#define DATA_REG1_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + DATA_REG1_OFFSET)
+#define DATA_REG2_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + DATA_REG2_OFFSET)
+#define SYS_CFG_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + SYS_CFG_OFFSET)
+#define SYS_CTRL_STS_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + SYS_CTRL_STS_OFFSET)
 
 #define CONFIG_EN 0x02
 #define LOOPBACK_EN 0x01
+#define SEND 0x1
 #define TX_SUCCESSFUL 0x02
 
 #define WR_EN 0x20
@@ -103,24 +106,56 @@ void main()
     // Flag start of the test
 	reg_mprj_datal = 0xAB600000;
 
+    // Set configuration data
+    uint32_t TSEG2 = 0x8;
+    uint32_t TSEG1 = 0x10;
+    uint32_t BRP = 0x2;
+    uint32_t SID = 0xAB;
+    uint32_t DLC = 0x5;
+    uint32_t DATA_BYTE_0 = 0xEE;
+    uint32_t DATA_BYTE_1 = 0xEE;
+    uint32_t DATA_BYTE_2 = 0xFF;
+    uint32_t DATA_BYTE_3 = 0xCA;
+    uint32_t DATA_BYTE_4 = 0x30;
+    uint32_t DATA_BYTE_5 = 0xB0;
+    uint32_t DATA_BYTE_6 = 0x0A;
+    uint32_t DATA_BYTE_7 = 0xAB;
+
     // Enable device configuration
-    device_register_write(SYS_CFG_REG, CONFIG_EN);
+    device_register_write(SYS_CFG_REG, SYS_CFG_ENABLE_BIT_MASK);
 
     // Enable loopback mode
-    device_register_write(SYS_CFG_REG, (CONFIG_EN | LOOPBACK_EN));
+    device_register_write(SYS_CFG_REG, (SYS_CFG_ENABLE_BIT_MASK | SYS_CFG_MODE_BIT_MASK));
 
     // Apply configuration
-    device_register_write(BAUD_RATE_CFG_REG, 0x00102008);
-    device_register_write(MSG_ID_REG, 0x05580000);
-    device_register_write(MSG_CFG_REG, 0x5);
-    device_register_write(DATA_REG1_REG, 0xCAFFEEEE);
-    device_register_write(DATA_REG2_REG, 0xAB0AB030);
+    device_register_write(BAUD_RATE_CFG_REG, ( \
+        (TSEG2 << BAUD_RATE_CFG_TSEG2_BIT_OFFSET) | \
+        (TSEG1 << BAUD_RATE_CFG_TSEG1_BIT_OFFSET) | \
+        (BRP << BAUD_RATE_CFG_BRP_BIT_OFFSET) \
+        ) \
+    );
+    device_register_write(MSG_ID_REG, (SID << MSG_ID_SID_BIT_OFFSET));
+    device_register_write(MSG_CFG_REG, (DLC << MSG_CFG_DLC_BIT_OFFSET));
+    device_register_write(DATA_REG1_REG, ( \
+        (DATA_BYTE_0 << DATA_REG1_DATA_BYTE_0_BIT_OFFSET) | \
+        (DATA_BYTE_1 << DATA_REG1_DATA_BYTE_1_BIT_OFFSET) | \
+        (DATA_BYTE_2 << DATA_REG1_DATA_BYTE_2_BIT_OFFSET) | \
+        (DATA_BYTE_3 << DATA_REG1_DATA_BYTE_3_BIT_OFFSET) \
+        ) \
+    );
+    device_register_write(DATA_REG2_REG, ( \
+        (DATA_BYTE_4 << DATA_REG2_DATA_BYTE_4_BIT_OFFSET) | \
+        (DATA_BYTE_5 << DATA_REG2_DATA_BYTE_5_BIT_OFFSET) | \
+        (DATA_BYTE_6 << DATA_REG2_DATA_BYTE_6_BIT_OFFSET) | \
+        (DATA_BYTE_7 << DATA_REG2_DATA_BYTE_7_BIT_OFFSET) \
+        ) \
+    );
 
     // Disable device configuration
     device_register_write(SYS_CFG_REG, (~CONFIG_EN | LOOPBACK_EN));
 
     // Initiate CAN transfer
-    device_register_write(SYS_CTRL_STS_REG, 0x00000001);
+    device_register_write(SYS_CTRL_STS_REG, ((~SYS_CTRL_STS_SEND_BIT_MASK | (0x1 << SYS_CTRL_STS_SEND_BIT_OFFSET))));
 
     uint32_t tmp;
     while (1) {
