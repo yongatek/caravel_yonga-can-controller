@@ -53,7 +53,7 @@ YONGA-CAN Controller is a partial implementation of CAN 2.0B standard. Currently
 | `0x18` | SYS_CTRL_STS |IP Control and Status Register | REG | R/W |  | `0x0` |
 |        |  [0] SEND | Send Message |  |  | self-clearing | `0x0` |
 |        |  [3:1] STATUS_CODE | Operation Status Code |  |  |  | `0x0` |
-|        |  | TX_SUCCESSFUL = 1, ARBITRATION_LOST = 2, TX_FAILED = 3 |  |  |  |  |
+|        |  | TX_SUCCESSFUL = 1, ARBITRATION_LOST = 2, TX_FAILED = 4 |  |  |  |  |
 
 _Generated on 2022-09-06 at 12:53 (UTC) by airhdl version 2022.08.2-618538036_
 
