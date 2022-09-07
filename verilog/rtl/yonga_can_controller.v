@@ -82,6 +82,7 @@ module yonga_can_controller(
 					done_tx <= 1'b0;
 					bitcounter_reg <= 6'd0;
 					is_standart <= 1'b1;
+					is_extended <= 1'b0;
           			if((i_config_enable == 0) && (i_sys_ctrl_sts_send == 1)) begin
             			state_reg <= STATE_SYNC;
 						o_pulse_gen_en <= 1'b1;
