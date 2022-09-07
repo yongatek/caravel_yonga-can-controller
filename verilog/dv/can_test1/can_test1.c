@@ -34,10 +34,10 @@
 #define SYS_CFG_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + SYS_CFG_OFFSET)
 #define SYS_CTRL_STS_REG (YONGA_CAN_IP_DEFAULT_BASEADDR + SYS_CTRL_STS_OFFSET)
 
-#define CONFIG_EN 0x02
-#define LOOPBACK_EN 0x01
-#define SEND 0x1
-#define TX_SUCCESSFUL 0x02
+#define CONFIG_EN SYS_CFG_ENABLE_BIT_MASK
+#define LOOPBACK_EN SYS_CFG_MODE_BIT_MASK
+#define SEND SYS_CTRL_STS_SEND_BIT_MASK
+#define TX_SUCCESSFUL SYS_CTRL_STS_STATUS_CODE_TX_SUCCESSFUL
 
 #define WR_EN 0x20
 
@@ -122,10 +122,10 @@ void main()
     uint32_t DATA_BYTE_7 = 0xAB;
 
     // Enable device configuration
-    device_register_write(SYS_CFG_REG, SYS_CFG_ENABLE_BIT_MASK);
+    device_register_write(SYS_CFG_REG, CONFIG_EN);
 
     // Enable loopback mode
-    device_register_write(SYS_CFG_REG, (SYS_CFG_ENABLE_BIT_MASK | SYS_CFG_MODE_BIT_MASK));
+    device_register_write(SYS_CFG_REG, (CONFIG_EN | LOOPBACK_EN));
 
     // Apply configuration
     device_register_write(BAUD_RATE_CFG_REG, ( \
@@ -155,7 +155,7 @@ void main()
     device_register_write(SYS_CFG_REG, (~CONFIG_EN | LOOPBACK_EN));
 
     // Initiate CAN transfer
-    device_register_write(SYS_CTRL_STS_REG, ((~SYS_CTRL_STS_SEND_BIT_MASK | (0x1 << SYS_CTRL_STS_SEND_BIT_OFFSET))));
+    device_register_write(SYS_CTRL_STS_REG, SEND);
 
     uint32_t tmp;
     while (1) {
