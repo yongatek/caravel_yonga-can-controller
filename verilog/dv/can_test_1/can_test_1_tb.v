@@ -17,7 +17,7 @@
 
 `timescale 1 ns / 1 ps
 
-module can_test1_tb;
+module can_test_1_tb;
 	reg clock;
 	reg RSTB;
 	reg CSB;
@@ -44,8 +44,8 @@ module can_test1_tb;
 	end
 
 	initial begin
-		$dumpfile("can_test1.vcd");
-		$dumpvars(0, can_test1_tb);
+		$dumpfile("can_test_1.vcd");
+		$dumpvars(0, can_test_1_tb);
 
 		// Repeat cycles of 1000 clock edges as needed to complete testbench
 		repeat (200) begin
@@ -121,7 +121,7 @@ module can_test1_tb;
 	);
 
 	spiflash #(
-		.FILENAME("can_test1.hex")
+		.FILENAME("can_test_1.hex")
 	) spiflash (
 		.csb(flash_csb),
 		.clk(flash_clk),

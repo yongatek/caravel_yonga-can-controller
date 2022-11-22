@@ -19,6 +19,8 @@
 #include <defs.h>
 #include <stub.c>
 
+#define reg_mprj_slave (*(volatile uint32_t*)0x30000000)
+
 #include "YONGA_CAN_IP_regs.h"
 
 /*
